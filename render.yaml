@@ -1,0 +1,21 @@
+# Blueprint Render : crée l'API + la base PostgreSQL depuis GitHub, sans PC.
+services:
+  - type: web
+    name: saash-api
+    runtime: docker
+    rootDir: backend
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: saash-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATA_KEY
+        generateValue: true
+      - key: PUBLIC_URL
+        sync: false # à remplir : l'URL https de ce service, ex. https://saash-api.onrender.com
+
+databases:
+  - name: saash-db
