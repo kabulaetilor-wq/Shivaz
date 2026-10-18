@@ -46,7 +46,7 @@ fun Application.module() {
             if (name.contains("BadRequest") || name.contains("ContentTransformation") || name.contains("Serialization")) {
                 call.respond(HttpStatusCode.BadRequest, buildJsonObject { put("error", "Requête invalide") })
             } else {
-                call.application.log.error("Erreur non gérée", e)
+                call.application.environment.log.error("Erreur non gérée", e)
                 call.respond(HttpStatusCode.InternalServerError, buildJsonObject { put("error", "Erreur serveur") })
             }
         }
@@ -78,7 +78,7 @@ fun Application.module() {
             try {
                 Repo.checkAll(Repo.pingable())
             } catch (e: Exception) {
-                log.error("Erreur du moniteur", e)
+                environment.log.error("Erreur du moniteur", e)
             }
             delay(60_000)
         }
